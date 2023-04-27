@@ -1,6 +1,6 @@
 package main
 
-import _ "github.com/mattn/go-sqlite3"
+import _ "github.com/psarna/go-sqlite3"
 import "database/sql"
 import "fmt"
 import "log"
@@ -15,12 +15,15 @@ func main() {
 
 	defer db.Close()
 
-	var version string
-	err = db.QueryRow("SELECT SQLITE_VERSION()").Scan(&version)
+    var addr sql.NullInt64
+	var opcode sql.NullString
+    var p1, p2, p3, p4, p5 sql.NullInt64
+    var comment sql.NullString
+	err = db.QueryRow("EXPLAIN SELECT * FROM libsql_wasm_func_table").Scan(&addr, &opcode, &p1, &p2, &p3, &p4, &p5, &comment)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(version)
+	fmt.Println(addr, opcode, p1, p2, p3, p4, p5, comment)
 }

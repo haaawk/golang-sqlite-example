@@ -16,7 +16,7 @@ func main() {
 	defer db.Close()
 
 	var version string
-	err = db.QueryRow("SELECT SQLITE_VERSION()").Scan(&version)
+	err = db.QueryRow("EXPLAIN SELECT * FROM libsql_wasm_func_table").Scan(&version)
 
 	if err != nil {
 		log.Fatal(err)
